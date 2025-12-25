@@ -1,6 +1,6 @@
 {
-  "name": "markdown-it-admon",
-  "version": "1.0.1",
+  "name": "markdown-it-admon-collapsible",
+  "version": "0.0.1",
   "description": "Plugin to create admonitions for markdown-it markdown parser",
   "keywords": [
     "admonition",
@@ -8,18 +8,18 @@
     "markdown-it",
     "markdown"
   ],
-  "homepage": "https://github.com/commenthol/markdown-it-admon#readme",
+  "homepage": "https://github.com/tomasdahlqvist/markdown-it-admon-collapsible#readme",
   "bugs": {
-    "url": "https://github.com/commenthol/markdown-it-admon/issues"
+    "url": "https://github.com/tomasdahlqvist/markdown-it-admon-collapsible/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/commenthol/markdown-it-admon.git"
+    "url": "git+https://github.com/tomasdahlqvist/markdown-it-admon-collapsible.git"
   },
   "license": "MIT",
   "author": "",
   "maintainers": [
-    "commenthol <commenthol@gmail.com>"
+    "tomasdahlqvist"
   ],
   "main": "index.js",
   "directories": {
@@ -35,10 +35,11 @@
     "styles/"
   ],
   "scripts": {
-    "all": "make",
+    "clean": "git clean -fXd -e \\!node_modules -e \\!node_modules/**/*",
     "coverage": "npm run test && c8 report --reporter html",
     "lint": "eslint --fix .",
-    "test": "c8 mocha"
+    "test": "c8 mocha",
+    "build": "rimraf dist && node_modules/.bin/browserify ./ -s markdownitAdmonCollapsible > dist/markdown-it-admon-collapsible.js && terser dist/markdown-it-admon-collapsible.js -c -m > dist/markdown-it-admon-collapsible.min.js"
   },
   "dependencies": {},
   "devDependencies": {

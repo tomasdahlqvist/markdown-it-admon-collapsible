@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches-ignore:
+      - 'dependabot/**'
+  workflow_dispatch:
+
+jobs:
+
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: JustinBeckwith/linkinator-action@v1.11.0
+      with:
+        paths: '*.md'
+        concurrency: 1
+        retry: 3
+
+  check-spelling:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: tbroadley/spellchecker-cli-action@v1
+      with:
+        dictionaries: '.github/dictionary.txt'
+        files: '*.md'
+
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: current
+    - run: npm ci
+    - run: npm run build
+    - run: npm run lint
+    - run: npm test
+    - run: npm run coverage

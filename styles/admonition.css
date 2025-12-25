@@ -1,3 +1,39 @@
+/* Collapsible block styles */
+.collapsible {
+  border-left-color: #888;
+  position: relative;
+}
+.collapsible .admonition-title {
+  cursor: pointer;
+  user-select: none;
+  padding-right: 2.5rem;
+}
+.collapsible .admonition-title {
+  position: relative;
+}
+.collapsible .collapsible-toggle {
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+.collapsible.expanded {
+  /* Optionally highlight expanded state */
+}
+.collapsible-content {
+  display: none;
+}
+.collapsible.expanded .collapsible-content {
+  display: block;
+}
 /**
  * @credits https://github.com/qjebbs/vscode-markdown-extended
  * @copyright 2018 jebbs

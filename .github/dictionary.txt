@@ -1,0 +1,8 @@
+IEC
+JSON
+markdownlint
+README
+YAML
+markdownlint-cli
+markdownlint-cli2
+MD024

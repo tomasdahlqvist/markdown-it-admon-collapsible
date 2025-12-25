@@ -1,16 +1,31 @@
-# markdown-it-admon
+# markdown-it-admon-collapsible
+
+> **Note:** This package is a fork of [markdown-it-admon](https://github.com/commenthol/markdown-it-admon) with added support for collapsible blocks (???), inspired by Material for MkDocs.
 
 > Plugin for creating admonitions for [markdown-it](https://github.com/markdown-it/markdown-it) markdown parser.
 
-With this plugin you can create admonitions like:
+With this plugin you can have collapsible admonitions:
 
+- Admonition blocks: Use !!! to create styled info/warning/note blocks
+- Collapsible blocks: Use ??? to create blocks with a toggle, collapsed or expanded
+- ???+ starts the block expanded
+- All admonition and collapsible types from Material for MkDocs are supported
+- Toggle button and styles included
+
+Examples:
+
+```markdown
+!!! note
+  This is an admonition
+
+??? warning "Collapsible Warning"
+  This block can be expanded/collapsed
+
+???+ info "Expanded Info"
+  This block starts expanded
 ```
-!!! warning
-    *here be dragons*
 
-```
-
-Markdown syntax follows [python-markdown][].
+Markdown syntax is inspired by [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/reference/admonitions/) and supports both admonition blocks (!!!) and collapsible blocks (???).
 
 [rST][] suggests the following "types": `attention`, `caution`, `danger`, `error`, `hint`, `important`, `note`, `tip`, and `warning`; however, you’re free to use whatever you want.
 
@@ -37,7 +52,7 @@ A styles file does support the following admonition types: Credits go to [vscode
 node.js:
 
 ```bash
-$ npm install markdown-it-admon --save
+$ npm install markdown-it-admon-collapsible --save
 ```
 
 
@@ -45,7 +60,7 @@ $ npm install markdown-it-admon --save
 
 ```js
 const md = require('markdown-it')()
-             .use(require('markdown-it-admon') [, options]);
+             .use(require('markdown-it-admon-collapsible') [, options]);
 ```
 
 Params:
@@ -54,24 +69,13 @@ Params:
 - __options?:__
   - __render__ - optional, renderer function for opening/closing tokens.
 
-
 ## License
 
 [MIT](./LICENSE)
 
-
 ## References
 
-<!-- !ref -->
-
-* [python-markdown][python-markdown]
-* [rST][rST]
+* [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/reference/admonitions/)
 * [vscode-markdown-extended][vscode-markdown-extended]
-
-<!-- ref! -->
-
-[python-markdown]: https://python-markdown.github.io/extensions/admonition/
-
-[rST]: https://docutils.sourceforge.io/docs/ref/rst/directives.html#specific-admonitions
-
-[vscode-markdown-extended]: https://github.com/qjebbs/vscode-markdown-extended
+* [rST]: https://docutils.sourceforge.io/docs/ref/rst/directives.html#specific-admonitions
+* [vscode-markdown-extended]: https://github.com/qjebbs/vscode-markdown-extended

@@ -140,3 +140,19 @@ Admonitions in list
       I am done
 - !!! warning 
       ...
+
+Collapsible
+
+    ??? note
+        Hidden by default
+
+??? note
+    Hidden by default
+
+
+    ???+ note
+        Shown by default
+
+
+???+ note
+    Shown by default

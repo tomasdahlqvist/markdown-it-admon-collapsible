@@ -1,4 +1,3 @@
-
 Simple admonition
 .
 !!! note
@@ -266,4 +265,78 @@ Does not render
 .
 <p>!!!
 content</p>
+.
+
+
+Collapsible block (collapsed by default)
+.
+??? note
+    Collapsible content
+.
+<div class="admonition note collapsible">
+<p class="admonition-title"><button class="collapsible-toggle" tabindex="0">&#x2b;</button>Note</p>
+<div class="collapsible-content">
+<p>Collapsible content</p>
+</div>
+</div>
+.
+
+
+Collapsible block (expanded by default)
+.
+???+ warning Expanded Warning
+    Expanded content
+.
+<div class="admonition warning collapsible expanded">
+<p class="admonition-title"><button class="collapsible-toggle" tabindex="0">&#x2212;</button>Expanded Warning</p>
+<div class="collapsible-content">
+<p>Expanded content</p>
+</div>
+</div>
+.
+
+
+Unknown marker type (should not match)
+.
+$$$ note
+    Should not match
+.
+<p>$$$ note
+Should not match</p>
+.
+
+Silent mode validation (internal, not directly testable via fixture, but covered by markdown-it)
+.
+!!! note
+    Silent mode test
+.
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Silent mode test</p>
+</div>
+.
+
+Two consecutive empty lines closes block
+.
+!!! note
+    line1
+
+
+line2
+.
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>line1</p>
+</div>
+<p>line2</p>
+.
+
+Block with no title
+.
+!!! note ""
+    No title here
+.
+<div class="admonition note">
+<p>No title here</p>
+</div>
 .
