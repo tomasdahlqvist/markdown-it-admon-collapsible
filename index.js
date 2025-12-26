@@ -56,7 +56,6 @@ function renderCollapsibleOpen(tokens, idx) {
 }
 
 function renderCollapsibleTitleOpen(tokens, idx) {
-  const token = tokens[idx];
   const expanded = tokens[idx - 1]?.meta?.expanded;
   // Add toggle button
   return `<p class="admonition-title"><button class="collapsible-toggle" tabindex="0">${expanded ? '&#x2212;' : '&#x2b;'}</button>`;
@@ -99,7 +98,6 @@ function admonition(state, startLine, endLine, silent) {
 
   const markerStr = markerType.str;
   const markerLen = markerStr.length;
-  const markerChar = markerStr.charCodeAt(0);
 
   // Check out the rest of the marker string
   for (pos = start + 1; pos <= max; pos++) {

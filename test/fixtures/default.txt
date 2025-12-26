@@ -28,7 +28,7 @@ Could contain block elements too
 
 Shows custom title
 .
-!!! note Custom title
+!!! note "Custom title"
 
     Some text
 

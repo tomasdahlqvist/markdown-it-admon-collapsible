@@ -6,3 +6,9 @@ YAML
 markdownlint-cli
 markdownlint-cli2
 MD024
+markdown-it-admon
+markdown-it-admon-collapsible
+MkDocs
+rST
+vscode-markdown-extended
+renderer
