@@ -28,10 +28,12 @@
 .collapsible.expanded {
   /* Optionally highlight expanded state */
 }
-.collapsible-content {
+
+/* Hide all siblings of .admonition-title when not expanded */
+.collapsible:not(.expanded) > .admonition-title ~ * {
   display: none;
 }
-.collapsible.expanded .collapsible-content {
+.collapsible.expanded > .admonition-title ~ * {
   display: block;
 }
 /**
@@ -58,7 +60,9 @@
   overflow: auto;
 }
 
-.admonition>p {
+
+/* Ensure spacing for first child after .admonition-title (now a div) */
+.admonition > .admonition-title + * {
   margin-top: .8rem;
 }
 

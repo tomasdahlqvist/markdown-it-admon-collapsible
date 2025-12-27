@@ -58,19 +58,19 @@ function renderCollapsibleOpen(tokens, idx) {
 function renderCollapsibleTitleOpen(tokens, idx) {
   const expanded = tokens[idx - 1]?.meta?.expanded;
   // Add toggle button
-  return `<p class="admonition-title"><button class="collapsible-toggle" tabindex="0">${expanded ? '&#x2212;' : '&#x2b;'}</button>`;
+  return `<div class="admonition-title"><button class="collapsible-toggle" tabindex="0">${expanded ? '&#x2212;' : '&#x2b;'}</button>`;
 }
 
 function renderCollapsibleTitleClose() {
-  return '</p>\n';
+  return '</div>\n';
 }
 
 function renderCollapsibleContentOpen(tokens, idx) {
-  return '<div class="collapsible-content">\n';
+  return '';
 }
 
 function renderCollapsibleContentClose() {
-  return '</div>\n';
+  return '';
 }
 
 
@@ -166,7 +166,7 @@ function admonition(state, startLine, endLine, silent) {
 
   if (title) {
     const titleMarkup = markup + ' ' + tag;
-    token = state.push(isCollapsible ? 'collapsible_title_open' : 'admonition_title_open', 'p', 1);
+    token = state.push(isCollapsible ? 'collapsible_title_open' : 'admonition_title_open', 'div', 1);
     token.markup = titleMarkup;
     token.attrs = [['class', 'admonition-title']];
     token.map = [startLine, startLine + 1];
@@ -176,7 +176,7 @@ function admonition(state, startLine, endLine, silent) {
     token.map = [startLine, startLine + 1];
     token.children = [];
 
-    token = state.push(isCollapsible ? 'collapsible_title_close' : 'admonition_title_close', 'p', -1);
+    token = state.push(isCollapsible ? 'collapsible_title_close' : 'admonition_title_close', 'div', -1);
     token.markup = titleMarkup;
   }
 
@@ -204,8 +204,7 @@ module.exports = function admonitionPlugin(md, options = {}) {
 
   // Collapsible rendering
   md.renderer.rules.collapsible_open = renderCollapsibleOpen;
-  md.renderer.rules.collapsible_close = (tokens, idx) => '</div>';
-    md.renderer.rules.collapsible_close = (tokens, idx) => '</div>\n';
+  md.renderer.rules.collapsible_close = (tokens, idx) => '</div>\n';
   md.renderer.rules.collapsible_title_open = renderCollapsibleTitleOpen;
   md.renderer.rules.collapsible_title_close = renderCollapsibleTitleClose;
 

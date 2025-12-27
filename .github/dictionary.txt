@@ -12,3 +12,4 @@ MkDocs
 rST
 vscode-markdown-extended
 renderer
+Changelog
