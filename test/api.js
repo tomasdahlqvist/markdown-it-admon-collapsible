@@ -28,7 +28,7 @@ describe('api', function () {
         const html = mdit().use(sut).render(`!!! ${tag}\n    content`)
         const exp = [
         `<div class="admonition ${tag}">`,
-        `<div class="admonition-title">${capitalize(tag)}</div>`,
+        `<p class="admonition-title">${capitalize(tag)}</p>`,
         '<p>content</p>',
         '</div>',
         ''

@@ -45,17 +45,6 @@
       var html = md.render(input);
       document.getElementById('output').innerHTML = html;
       // Add toggle logic for collapsible blocks
-      document.querySelectorAll('.collapsible .collapsible-toggle').forEach(function(btn) {
-        btn.onclick = function(e) {
-          e.stopPropagation();
-          var block = btn.closest('.collapsible');
-          block.classList.toggle('expanded');
-          btn.innerHTML = block.classList.contains('expanded') ? '&#x2212;' : '&#x2b;';
-        };
-        // Set initial icon
-        var block = btn.closest('.collapsible');
-        btn.innerHTML = block.classList.contains('expanded') ? '&#x2212;' : '&#x2b;';
-      });
     }
     // Initial render
     renderMarkdown();

@@ -44,25 +44,8 @@ function validate (params) {
   return !!tag
 }
 
-
 function renderDefault(tokens, idx, _options, env, slf) {
   return slf.renderToken(tokens, idx, _options, env, slf);
-}
-
-function renderCollapsibleOpen(tokens, idx) {
-  const token = tokens[idx];
-  const classes = token.attrs ? token.attrs.find(a => a[0] === 'class')[1] : '';
-  return `<div class="${classes}">\n`;
-}
-
-function renderCollapsibleTitleOpen(tokens, idx) {
-  const expanded = tokens[idx - 1]?.meta?.expanded;
-  // Add toggle button
-  return `<div class="admonition-title"><button class="collapsible-toggle" tabindex="0">${expanded ? '&#x2212;' : '&#x2b;'}</button>`;
-}
-
-function renderCollapsibleTitleClose() {
-  return '</div>\n';
 }
 
 function renderCollapsibleContentOpen(tokens, idx) {
@@ -73,13 +56,11 @@ function renderCollapsibleContentClose() {
   return '';
 }
 
-
 const minMarkers = 3;
 const markerTypes = [
   { str: '!', type: 'admonition' },
   { str: '?', type: 'collapsible' }
 ];
-
 
 function admonition(state, startLine, endLine, silent) {
   let pos, nextLine, token;
@@ -155,10 +136,13 @@ function admonition(state, startLine, endLine, silent) {
   const openType = isCollapsible ? 'collapsible_open' : 'admonition_open';
   const closeType = isCollapsible ? 'collapsible_close' : 'admonition_close';
 
-  token = state.push(openType, 'div', 1);
+  token = isCollapsible ? state.push(openType, 'details', 1) : state.push(openType, 'div', 1)
   token.markup = markup;
   token.block = true;
-  token.attrs = [['class', `admonition ${tag}${isCollapsible ? ' collapsible' : ''}${expanded ? ' expanded' : ''}`]];
+  token.attrs = [['class', `admonition ${tag}`]];
+  if (expanded) {
+    token.attrs.push(['open', '']);
+  }
   token.meta = { tag, expanded };
   token.content = title;
   token.info = params;
@@ -166,7 +150,7 @@ function admonition(state, startLine, endLine, silent) {
 
   if (title) {
     const titleMarkup = markup + ' ' + tag;
-    token = state.push(isCollapsible ? 'collapsible_title_open' : 'admonition_title_open', 'div', 1);
+    token = isCollapsible ? state.push('collapsible_title_open', 'summary', 1) : state.push('admonition_title_open', 'p', 1)
     token.markup = titleMarkup;
     token.attrs = [['class', 'admonition-title']];
     token.map = [startLine, startLine + 1];
@@ -176,7 +160,7 @@ function admonition(state, startLine, endLine, silent) {
     token.map = [startLine, startLine + 1];
     token.children = [];
 
-    token = state.push(isCollapsible ? 'collapsible_title_close' : 'admonition_title_close', 'div', -1);
+    token = isCollapsible ? state.push('collapsible_title_close', 'summary', -1) : state.push('admonition_title_close', 'p', -1);
     token.markup = titleMarkup;
   }
 
@@ -203,10 +187,9 @@ module.exports = function admonitionPlugin(md, options = {}) {
   md.renderer.rules.admonition_title_close = render;
 
   // Collapsible rendering
-  md.renderer.rules.collapsible_open = renderCollapsibleOpen;
-  md.renderer.rules.collapsible_close = (tokens, idx) => '</div>\n';
-  md.renderer.rules.collapsible_title_open = renderCollapsibleTitleOpen;
-  md.renderer.rules.collapsible_title_close = renderCollapsibleTitleClose;
+  // Use default renderer for collapsible_open/close
+  md.renderer.rules.collapsible_close = (tokens, idx) => '</details>\n';
+  // Use default renderer for collapsible_title_open/close
 
   // Wrap content in collapsible-content div
   const origBlockTokenize = md.block.tokenize;
