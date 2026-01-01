@@ -37,7 +37,7 @@
   "scripts": {
     "clean": "git clean -fXd -e \\!node_modules -e \\!node_modules/**/*",
     "coverage": "npm run test && c8 report --reporter html",
-    "lint": "eslint --fix .",
+    "lint": "eslint --fix . && markdownlint-cli2 **/*.md",
     "test": "c8 mocha",
     "build": "mkdir -p dist && node_modules/.bin/browserify ./ -s markdownitAdmonCollapsible > dist/markdown-it-admon-collapsible.js && terser dist/markdown-it-admon-collapsible.js -c -m > dist/markdown-it-admon-collapsible.min.js"
   },
@@ -51,6 +51,9 @@
     "eslint-plugin-promise": "^6.1.1",
     "markdown-it": "^14.0.0",
     "markdown-it-testgen": "~0.1.6",
+    "markdownlint": "^0.40.0",
+    "markdownlint-cli2": "^0.20.0",
+    "markdownlint-rule-numbered-headings-unique": "^1.0.7",
     "mocha": "^11.7.5",
     "rimraf": "^6.1.2",
     "terser": "^5.26.0"

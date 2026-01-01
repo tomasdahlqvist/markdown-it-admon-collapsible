@@ -1,0 +1,8 @@
+{
+    "customRules": [
+        "markdownlint-rule-numbered-headings-unique"
+    ],
+    "config": { "MD024": false,
+                "MD013": false },
+    "ignores": ["node_modules"]
+}

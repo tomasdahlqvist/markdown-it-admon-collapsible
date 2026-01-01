@@ -25,18 +25,18 @@ function getTag (params) {
     return {}
   }
 
-  const joined = _title.join(' ');
-  let title;
+  const joined = _title.join(' ')
+  let title
   if (!joined) {
-    title = capitalize(tag);
+    title = capitalize(tag)
   } else if (joined === '""') {
-    title = '';
+    title = ''
   } else if ((joined.startsWith('"') && joined.endsWith('"')) || (joined.startsWith("'") && joined.endsWith("'"))) {
-    title = joined.slice(1, -1);
+    title = joined.slice(1, -1)
   } else {
-    title = joined;
+    title = joined
   }
-  return { tag: tag.toLowerCase(), title };
+  return { tag: tag.toLowerCase(), title }
 }
 
 function validate (params) {
@@ -44,171 +44,181 @@ function validate (params) {
   return !!tag
 }
 
-function renderDefault(tokens, idx, _options, env, slf) {
-  return slf.renderToken(tokens, idx, _options, env, slf);
+function renderDefault (tokens, idx, _options, env, slf) {
+  return slf.renderToken(tokens, idx, _options, env, slf)
 }
 
-function renderCollapsibleContentOpen(tokens, idx) {
-  return '';
+function renderCollapsibleContentOpen (tokens, idx) {
+  return ''
 }
 
-function renderCollapsibleContentClose() {
-  return '';
+function renderCollapsibleContentClose () {
+  return ''
 }
 
-const minMarkers = 3;
+const minMarkers = 3
 const markerTypes = [
   { str: '!', type: 'admonition' },
   { str: '?', type: 'collapsible' }
-];
+]
 
-function admonition(state, startLine, endLine, silent) {
-  let pos, nextLine, token;
-  const start = state.bMarks[startLine] + state.tShift[startLine];
-  let max = state.eMarks[startLine];
+function admonition (state, startLine, endLine, silent) {
+  let pos, nextLine, token
+  const start = state.bMarks[startLine] + state.tShift[startLine]
+  let max = state.eMarks[startLine]
 
   // Determine marker type
-  let markerType = null;
+  let markerType = null
   for (const type of markerTypes) {
     if (state.src.substr(start, type.str.length) === type.str.repeat(type.str.length)) {
-      markerType = type;
-      break;
+      markerType = type
+      break
     }
   }
-  if (!markerType) return false;
+  if (!markerType) return false
 
-  const markerStr = markerType.str;
-  const markerLen = markerStr.length;
+  const markerStr = markerType.str
+  const markerLen = markerStr.length
 
   // Check out the rest of the marker string
   for (pos = start + 1; pos <= max; pos++) {
     if (markerStr[(pos - start) % markerLen] !== state.src[pos]) {
-      break;
+      break
     }
   }
 
-  const markerCount = Math.floor((pos - start) / markerLen);
-  if (markerCount < minMarkers) return false;
-  const markerPos = pos - ((pos - start) % markerLen);
-  let params = state.src.slice(markerPos, max);
-  let markup = state.src.slice(start, markerPos);
+  const markerCount = Math.floor((pos - start) / markerLen)
+  if (markerCount < minMarkers) return false
+  const markerPos = pos - ((pos - start) % markerLen)
+  let params = state.src.slice(markerPos, max)
+  let markup = state.src.slice(start, markerPos)
 
   // Collapsible: check for plus sign
-  let isCollapsible = markerType.type === 'collapsible';
-  let expanded = false;
+  const isCollapsible = markerType.type === 'collapsible'
+  let expanded = false
   if (isCollapsible && params.trim().startsWith('+')) {
-    expanded = true;
-    params = params.trim().slice(1).trim();
-    markup += '+';
+    expanded = true
+    params = params.trim().slice(1).trim()
+    markup += '+'
   }
 
-  if (!validate(params)) return false;
-  if (silent) return true;
+  const validateFn = state.md.options && state.md.options.admonitionValidate
+    ? state.md.options.admonitionValidate
+    : validate
+  if (!validateFn(params)) return false
+  if (silent) return true
 
-  const oldParent = state.parentType;
-  const oldLineMax = state.lineMax;
-  const oldIndent = state.blkIndent;
+  const oldParent = state.parentType
+  const oldLineMax = state.lineMax
+  const oldIndent = state.blkIndent
 
-  let blkStart = pos;
+  let blkStart = pos
   for (; blkStart < max; blkStart += 1) {
-    if (state.src[blkStart] !== ' ') break;
+    if (state.src[blkStart] !== ' ') break
   }
-  state.parentType = 'admonition';
-  state.blkIndent += blkStart - start;
+  state.parentType = 'admonition'
+  state.blkIndent += blkStart - start
 
-  let wasEmpty = false;
-  nextLine = startLine;
+  let wasEmpty = false
+  nextLine = startLine
   for (;;) {
-    nextLine++;
-    if (nextLine >= endLine) break;
-    pos = state.bMarks[nextLine] + state.tShift[nextLine];
-    max = state.eMarks[nextLine];
-    const isEmpty = state.sCount[nextLine] < state.blkIndent;
-    if (isEmpty && wasEmpty) break;
-    wasEmpty = isEmpty;
-    if (pos < max && state.sCount[nextLine] < state.blkIndent) break;
+    nextLine++
+    if (nextLine >= endLine) break
+    pos = state.bMarks[nextLine] + state.tShift[nextLine]
+    max = state.eMarks[nextLine]
+    const isEmpty = state.sCount[nextLine] < state.blkIndent
+    if (isEmpty && wasEmpty) break
+    wasEmpty = isEmpty
+    if (pos < max && state.sCount[nextLine] < state.blkIndent) break
   }
-  state.lineMax = nextLine;
+  state.lineMax = nextLine
 
-  const { tag, title } = getTag(params);
+  const { tag, title } = getTag(params)
 
   // Use different token for collapsible
-  const openType = isCollapsible ? 'collapsible_open' : 'admonition_open';
-  const closeType = isCollapsible ? 'collapsible_close' : 'admonition_close';
+  const openType = isCollapsible ? 'collapsible_open' : 'admonition_open'
+  const closeType = isCollapsible ? 'collapsible_close' : 'admonition_close'
 
   token = isCollapsible ? state.push(openType, 'details', 1) : state.push(openType, 'div', 1)
-  token.markup = markup;
-  token.block = true;
-  token.attrs = [['class', `admonition ${tag}`]];
+  token.markup = markup
+  token.block = true
+  token.attrs = [['class', `admonition ${tag}`]]
   if (expanded) {
-    token.attrs.push(['open', '']);
+    token.attrs.push(['open', ''])
   }
-  token.meta = { tag, expanded };
-  token.content = title;
-  token.info = params;
-  token.map = [startLine, nextLine];
+  token.meta = { tag, expanded }
+  token.content = title
+  token.info = params
+  token.map = [startLine, nextLine]
 
   if (title) {
-    const titleMarkup = markup + ' ' + tag;
+    const titleMarkup = markup + ' ' + tag
     token = isCollapsible ? state.push('collapsible_title_open', 'summary', 1) : state.push('admonition_title_open', 'p', 1)
-    token.markup = titleMarkup;
-    token.attrs = [['class', 'admonition-title']];
-    token.map = [startLine, startLine + 1];
+    token.markup = titleMarkup
+    token.attrs = [['class', 'admonition-title']]
+    token.map = [startLine, startLine + 1]
 
-    token = state.push('inline', '', 0);
-    token.content = title;
-    token.map = [startLine, startLine + 1];
-    token.children = [];
+    token = state.push('inline', '', 0)
+    token.content = title
+    token.map = [startLine, startLine + 1]
+    token.children = []
 
-    token = isCollapsible ? state.push('collapsible_title_close', 'summary', -1) : state.push('admonition_title_close', 'p', -1);
-    token.markup = titleMarkup;
+    token = isCollapsible ? state.push('collapsible_title_close', 'summary', -1) : state.push('admonition_title_close', 'p', -1)
+    token.markup = titleMarkup
   }
 
-  state.md.block.tokenize(state, startLine + 1, nextLine);
+  state.md.block.tokenize(state, startLine + 1, nextLine)
 
-  token = state.push(closeType, 'div', -1);
-  token.markup = state.src.slice(start, pos);
-  token.block = true;
+  token = state.push(closeType, 'div', -1)
+  token.markup = state.src.slice(start, pos)
+  token.block = true
 
-  state.parentType = oldParent;
-  state.lineMax = oldLineMax;
-  state.blkIndent = oldIndent;
-  state.line = nextLine;
+  state.parentType = oldParent
+  state.lineMax = oldLineMax
+  state.blkIndent = oldIndent
+  state.line = nextLine
 
-  return true;
+  return true
 }
 
-module.exports = function admonitionPlugin(md, options = {}) {
-  const render = options.render || renderDefault;
+function admonitionPlugin (md, options = {}) {
+  const render = options.render || renderDefault
 
-  md.renderer.rules.admonition_open = render;
-  md.renderer.rules.admonition_close = render;
-  md.renderer.rules.admonition_title_open = render;
-  md.renderer.rules.admonition_title_close = render;
+  if (options.validate) {
+    md.options.admonitionValidate = options.validate
+  }
+
+  md.renderer.rules.admonition_open = render
+  md.renderer.rules.admonition_close = render
+  md.renderer.rules.admonition_title_open = render
+  md.renderer.rules.admonition_title_close = render
 
   // Collapsible rendering
   // Use default renderer for collapsible_open/close
-  md.renderer.rules.collapsible_close = (tokens, idx) => '</details>\n';
+  md.renderer.rules.collapsible_close = (tokens, idx) => '</details>\n'
   // Use default renderer for collapsible_title_open/close
 
   // Wrap content in collapsible-content div
-  const origBlockTokenize = md.block.tokenize;
-  md.block.tokenize = function(state, startLine, endLine) {
+  const origBlockTokenize = md.block.tokenize
+  md.block.tokenize = function (state, startLine, endLine) {
     if (state.parentType === 'admonition' && state.tokens.length > 0) {
-      const lastToken = state.tokens[state.tokens.length - 1];
+      const lastToken = state.tokens[state.tokens.length - 1]
       if (lastToken.type === 'collapsible_title_close') {
-        state.tokens.push({ type: 'collapsible_content_open' });
-        origBlockTokenize.call(this, state, startLine, endLine);
-        state.tokens.push({ type: 'collapsible_content_close' });
-        return;
+        state.tokens.push({ type: 'collapsible_content_open' })
+        origBlockTokenize.call(this, state, startLine, endLine)
+        state.tokens.push({ type: 'collapsible_content_close' })
+        return
       }
     }
-    origBlockTokenize.call(this, state, startLine, endLine);
-  };
-  md.renderer.rules.collapsible_content_open = renderCollapsibleContentOpen;
-  md.renderer.rules.collapsible_content_close = renderCollapsibleContentClose;
+    origBlockTokenize.call(this, state, startLine, endLine)
+  }
+  md.renderer.rules.collapsible_content_open = renderCollapsibleContentOpen
+  md.renderer.rules.collapsible_content_close = renderCollapsibleContentClose
 
   md.block.ruler.before('fence', 'admonition', admonition, {
     alt: ['paragraph', 'reference', 'blockquote', 'list']
-  });
+  })
 }
+
+admonitionPlugin.admonition = admonition
+module.exports = admonitionPlugin

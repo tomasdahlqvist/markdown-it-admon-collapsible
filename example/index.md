@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD033 MD041 MD012 MD027 -->
+
 <style>
 table { width: 100%; }
 tr { vertical-align: top; }
@@ -10,33 +12,33 @@ td { padding: 1em; }
 <tr><td>
 
 !!! note
-    This is a note 
+    This is a note
 
-!!! summary 
+!!! summary
     Lorem ipsum
 
-!!! abstract 
+!!! abstract
     Lorem ipsum
 
-!!! tldr 
+!!! tldr
     Lorem ipsum
 
-!!! info 
+!!! info
     Lorem ipsum
 
-!!! todo 
+!!! todo
     Lorem ipsum
 
 !!! tip
     Lorem ipsum
 
-!!! hint 
+!!! hint
     Lorem ipsum
 
 !!! success
     Lorem ipsum
 
-!!! check 
+!!! check
     Lorem ipsum
 
 !!! done
@@ -125,7 +127,7 @@ td { padding: 1em; }
 
 
 > Note in blockquote
-> 
+>
 > !!! note in blockquote
 >     Lorem ipsum
 >
@@ -138,7 +140,7 @@ Admonitions in list
       Lorem ipsum
 - !!! done ""
       I am done
-- !!! warning 
+- !!! warning
       ...
 
 Collapsible

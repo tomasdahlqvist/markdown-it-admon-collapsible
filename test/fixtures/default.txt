@@ -1,3 +1,13 @@
+Single-quoted title
+.
+!!! note 'Single Quoted Title'
+    content
+.
+<div class="admonition note">
+<p class="admonition-title">Single Quoted Title</p>
+<p>content</p>
+</div>
+.
 Simple admonition
 .
 !!! note
@@ -335,4 +345,20 @@ Block with no title
 <div class="admonition note">
 <p>No title here</p>
 </div>
+.
+Marker count less than minMarkers
+.
+!! note
+    content
+.
+<p>!! note
+content</p>
+.
+Admonition with no tag
+.
+!!! 
+    content
+.
+<p>!!!
+content</p>
 .

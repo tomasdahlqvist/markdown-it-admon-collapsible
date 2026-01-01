@@ -1,7 +1,6 @@
 # markdown-it-admon-collapsible
 
 > **Note:** This package is a fork of [markdown-it-admon](https://github.com/commenthol/markdown-it-admon) with added support for collapsible blocks (???), inspired by Material for MkDocs.
-
 > Plugin for creating admonitions for [markdown-it](https://github.com/markdown-it/markdown-it) markdown parser.
 
 With this plugin you can have collapsible admonitions:
@@ -31,7 +30,7 @@ Markdown syntax is inspired by [Material for MkDocs](https://squidfunk.github.io
 
 A styles file does support the following admonition types: Credits go to [vscode-markdown-extended][].
 
-```
+```text
 'note',
 'summary', 'abstract', 'tldr',
 'info', 'todo',
@@ -45,16 +44,15 @@ A styles file does support the following admonition types: Credits go to [vscode
 'quote', 'cite'
 ```
 
-![](./docs/admonition-types.png)
+![Admonition types](./docs/admonition-types.png)
 
 ## Installation
 
 node.js:
 
 ```bash
-$ npm install markdown-it-admon-collapsible --save
+npm install markdown-it-admon-collapsible --save
 ```
-
 
 ## API
 
@@ -63,11 +61,24 @@ const md = require('markdown-it')()
              .use(require('markdown-it-admon-collapsible') [, options]);
 ```
 
-Params:
+Plugin Options
 
-- __name__ - container name (mandatory)
-- __options?:__
-  - __render__ - optional, renderer function for opening/closing tokens.
+- `render`: (optional) Custom render function.
+- `validate`: (optional) Custom validation function. If provided, this function will be used to validate the parameters for admonitions.
+
+### Example usage
+
+```js
+const md = require('markdown-it')();
+const admonitionPlugin = require('markdown-it-admon-collapsible');
+
+md.use(admonitionPlugin, {
+  validate: function(params) {
+    // Custom validation logic
+    return params.startsWith('note');
+  }
+});
+```
 
 ## License
 
@@ -75,7 +86,7 @@ Params:
 
 ## References
 
-* [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/reference/admonitions/)
-* [vscode-markdown-extended][vscode-markdown-extended]
-* [rST]: https://docutils.sourceforge.io/docs/ref/rst/directives.html#specific-admonitions
-* [vscode-markdown-extended]: https://github.com/qjebbs/vscode-markdown-extended
+- [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/reference/admonitions/)
+- [vscode-markdown-extended][vscode-markdown-extended]
+- [rST]: https://docutils.sourceforge.io/docs/ref/rst/directives.html#specific-admonitions
+- [vscode-markdown-extended]: https://github.com/qjebbs/vscode-markdown-extended
