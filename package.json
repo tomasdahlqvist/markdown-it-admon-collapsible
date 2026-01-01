@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-admon-collapsible",
-  "version": "1.9.4",
+  "version": "1.9.5",
   "description": "Plugin to create admonitions for markdown-it markdown parser",
   "keywords": [
     "admonition",
